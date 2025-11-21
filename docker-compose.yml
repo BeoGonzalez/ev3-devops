@@ -7,23 +7,23 @@ services:
       - ./devops_config/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
-      - ""
+      - "9090:9090"
     restart: always
     networks:
-      -
+      - devops
 
   loki:
     image: grafana/loki:2.8.2
     container_name: loki
     ports:
-      - ""
+      - "3100:3100"
     volumes:
       - ./devops_config/ :/etc/loki/local-config.yaml:ro
       - ./loki_data:/loki # volumen para index/chunks
       - ./wal_data:/wal # volumen para WAL
     command: -config.file=/etc/loki/local-config.yaml
     networks:
-      -
+      - devops
   promtail:
     image: grafana/promtail:2.8.2
     container_name: promtail
@@ -35,7 +35,7 @@ services:
     depends_on:
       - loki
     networks:
-      -
+      - devops
 
   grafana:
     image: grafana/grafana:9.5.0
@@ -47,17 +47,18 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - loki
+      - prometheus
     networks:
-      -
+      - devops
   back:
-    image:
+    image: beogonzalez/ev3_devops:latest
     container_name: back
     ports:
       - "3001:3001"
     volumes:
       - ./logs:/usr/src/app/logs
     networks:
-      -
+      - devops
 
 networks:
   devops:
