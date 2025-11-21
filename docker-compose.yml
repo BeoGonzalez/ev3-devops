@@ -18,7 +18,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./devops_config/ :/etc/loki/local-config.yaml:ro
+      - ./devops_config/loki-config.yml:/etc/loki/local-config.yaml:ro
       - ./loki_data:/loki # volumen para index/chunks
       - ./wal_data:/wal # volumen para WAL
     command: -config.file=/etc/loki/local-config.yaml
