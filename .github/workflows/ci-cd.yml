@@ -1,12 +1,12 @@
-name: Build, Push Docker and Deploy to EC2
+name: ci-cd
 
 on:
   push:
     branches: [ "main" ]
 
 env:
-  DOCKERHUB_USERNAME: jocamposar #usuario DockerHub
-  DOCKERHUB_REPO:   full_stack2_back     #repo DockerHub
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME}} #usuario DockerHub
+  DOCKERHUB_REPO:   ${{ secrets.DOCKERHUB_REPO}}     #repo DockerHub
 
 jobs:
   build:
